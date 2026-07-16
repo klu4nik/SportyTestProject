@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Test artifacts
+screenshots/
+report.html
+htmlcov/
+coverage.xml
+.pytest_cache/
+
+# macOS
+.DS_Store
