@@ -2,42 +2,51 @@
 API test for placing a bet validation.
 """
 import pytest
-from api.api_client import APIClient
+from assertions.api_assertions import APIAssertions
 
 
 class TestPlaceBetValidation:
     """Test class for API bet placement validation."""
-    
+
     @pytest.mark.api
     @pytest.mark.smoke
-    def test_place_bet_validation(self, api_client):
-        """
-        Test placing a bet through the API with validation.
-        
-        Args:
-            api_client: API client instance
-        """
-        # Arrange - Get available matches
+    @pytest.mark.parametrize(
+        "stake",
+        [1, 2, 10, 25, 50, 99, 100],
+        ids=[
+            "stake_1",
+            "stake_2",
+            "stake_10",
+            "stake_25",
+            "stake_50",
+            "stake_99",
+            "stake_100",
+        ],
+    )
+    def test_place_bet_validation(self, api_client, stake):
+        # Arrange
         matches = api_client.get_matches()
-        assert len(matches) > 0
-        
-        # Act - Place a bet with valid data
+        assert matches, "No available matches"
+
+        api_client.reset_balance()
+        initial_balance = api_client.get_balance()["balance"]
+
         bet_data = {
-            "match_id": matches[0]["id"],
-            "outcome": "1",
-            "stake": "10.00"
+            "matchId": matches[0]["id"],
+            "selection": "DRAW",
+            "stake": stake,
         }
-        
+
+        # Act
         result = api_client.place_bet(bet_data)
-        
-        # Assert - Verify bet was placed successfully
-        assert "bet_id" in result
-        assert result["status"] == "placed"
-        assert float(result["stake"]) == 10.00
-        
-        # Act - Get updated balance
-        balance = api_client.get_balance()
-        
-        # Assert - Verify balance was updated
-        assert "balance" in balance
-        assert float(balance["balance"]) < 1000.00
+
+        # Assert
+        APIAssertions.assert_successful_bet(result, bet_data)
+
+        updated_balance = api_client.get_balance()["balance"]
+
+        APIAssertions.assert_balance_updated(
+            initial_balance=initial_balance,
+            updated_balance=updated_balance,
+            stake=stake,
+        )

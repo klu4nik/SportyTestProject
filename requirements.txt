@@ -1,4 +1,5 @@
 pytest
+pytest-check
 selenium
 requests
 pytest-html

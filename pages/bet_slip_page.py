@@ -55,7 +55,38 @@ class BetSlipPage(BasePage):
         """
         self.wait_visible(self.locators.PAYOUT_TEXT)
         return self.driver.find_element(*self.locators.PAYOUT_TEXT).text
-    
+
+    def get_total_stake(self) -> str:
+        """
+        Get total stake amount.
+
+        Returns:
+            Total stake amount as string
+        """
+        locator = self.wait_visible(self.locators.TOTAL_STAKE_VALUE)
+        return locator.text
+
+    def get_odds(self) -> str:
+        """
+        Get bet slip odds.
+
+        Returns:
+            Odds as string
+        """
+        locator = self.wait_visible(self.locators.BET_SLIP_ODDS)
+        return locator.text
+
+    def get_potential_payout(self) -> str:
+        """
+        Get potential payout amount.
+
+        Returns:
+            Potential payout amount as string
+        """
+        locator = self.wait_visible(self.locators.POTENTIAL_PAYOUT)
+        return locator.text
+
+
     def is_receipt_displayed(self) -> bool:
         """
         Check if receipt is displayed.

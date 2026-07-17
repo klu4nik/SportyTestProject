@@ -1,6 +1,8 @@
 """
 Home Page class implementing the Page Object Model for the home page.
 """
+from decimal import Decimal
+
 from selenium.webdriver.remote.webdriver import WebDriver
 from pages.base_page import BasePage
 from locators.home import HomeLocators
@@ -66,3 +68,14 @@ class HomePage(BasePage):
     def open_betslip(self) -> None:
         """Open the bet slip."""
         self.click(self.locators.BETSLIP_BUTTON)
+
+    def get_balance(self) -> Decimal:
+        """Get the current account balance."""
+
+        text= self.wait_visible(self.locators.BALANCE).text
+        amount = (
+            text.replace("Balance:", "")
+            .replace("€", "")
+            .strip()
+        )
+        return Decimal(amount)

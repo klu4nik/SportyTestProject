@@ -35,7 +35,7 @@ class APIClient:
             Dictionary containing matches data
         """
         response = self.session.get(
-            urljoin(self.base_url, '/matches'),
+            urljoin(self.base_url, 'api/matches'),
             timeout=self.timeout
         )
         response.raise_for_status()
@@ -66,7 +66,7 @@ class APIClient:
             Dictionary containing bet result
         """
         response = self.session.post(
-            urljoin(self.base_url, 'api/bets'),
+            urljoin(self.base_url, 'api/place-bet'),
             json=bet_data,
             timeout=self.timeout
         )

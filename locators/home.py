@@ -15,3 +15,4 @@ class HomeLocators:
     DAYS_BUTTON = (By.CSS_SELECTOR, "button.dayCell")
     OUTCOME_BUTTON = (By.CSS_SELECTOR, "[data-testid='outcome-button']")
     BETSLIP_BUTTON = (By.CSS_SELECTOR, "[data-testid='betslip-button']")
+    BALANCE = (By.CSS_SELECTOR, "#header-balance > span:not(.icon)")

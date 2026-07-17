@@ -19,13 +19,27 @@ class BetPlacingPopupPage(BasePage):
         """
         super().__init__(driver)
         self.locators = BetPlacingPopupLocators
-    
 
-    
+    def get_total_stake(self) -> str:
+        """
+        Get total stake amount from the success modal.
 
-    
+        Returns:
+            Total stake amount as string
+        """
+        element = self.wait_visible(self.locators.MODAL_TOTAL_STAKE_VALUE)
+        return element.text
 
-    
+    def get_odds(self) -> str:
+        """
+        Get odds from the success modal.
+
+        Returns:
+            Odds as string
+        """
+        element = self.wait_visible(self.locators.MODAL_ODDS)
+        return element.text
+
     def get_potential_payout(self) -> str:
         """
         Get potential payout amount.
@@ -33,9 +47,13 @@ class BetPlacingPopupPage(BasePage):
         Returns:
             Payout amount as string
         """
-        self.wait_visible(self.locators.POTENTIAL_PAYOUT)
-        return self.driver.find_element(*self.locators.POTENTIAL_PAYOUT).text
+        element = self.wait_visible(self.locators.POTENTIAL_PAYOUT)
+        return element.text
     
+    def close(self) -> None:
+        """Close the success popup."""
+        self.click(self.locators.CLOSE_BUTTON)
+
     def is_success_modal_displayed(self) -> bool:
         """
         Check if receipt is displayed.

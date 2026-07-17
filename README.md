@@ -42,6 +42,12 @@ To generate HTML report:
 pytest --html=report.html --self-contained-html
 ```
 
+## Configuration
+
+The following environment variables can be configured in `utils/config.py`:
+
+- `USER_ID` - User identifier for test execution
+
 ## Project Structure
 
 ```
