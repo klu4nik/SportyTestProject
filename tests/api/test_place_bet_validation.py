@@ -11,19 +11,19 @@ class TestPlaceBetValidation:
     @pytest.mark.api
     @pytest.mark.smoke
     @pytest.mark.parametrize(
-        "stake",
-        [1, 2, 10, 25, 50, 99, 100],
+        "selection,stake",
+        [
+            ("HOME", 1),
+            ("DRAW", 30.5),
+            ("AWAY", 100),
+        ],
         ids=[
-            "stake_1",
-            "stake_2",
-            "stake_10",
-            "stake_25",
-            "stake_50",
-            "stake_99",
-            "stake_100",
+            "home_stake_1",
+            "draw_stake_30.5",
+            "away_stake_100",
         ],
     )
-    def test_place_bet_validation(self, api_client, stake):
+    def test_place_bet_validation(self, api_client, selection, stake):
         # Arrange
         matches = api_client.get_matches()
         assert matches, "No available matches"
@@ -33,7 +33,7 @@ class TestPlaceBetValidation:
 
         bet_data = {
             "matchId": matches[0]["id"],
-            "selection": "DRAW",
+            "selection": selection,
             "stake": stake,
         }
 
@@ -46,7 +46,55 @@ class TestPlaceBetValidation:
         updated_balance = api_client.get_balance()["balance"]
 
         APIAssertions.assert_balance_updated(
-            initial_balance=initial_balance,
-            updated_balance=updated_balance,
-            stake=stake,
+            initial_balance,
+            updated_balance,
+            stake,
+        )
+
+    @pytest.mark.api
+    @pytest.mark.smoke
+    @pytest.mark.parametrize(
+        "stake",
+        [
+            -2,
+            0,
+            0.99,
+            30.9954,
+            100.11,
+            "Eleven"
+        ],
+        ids=[
+            "stake_-2",
+            "stake_0",
+            "stake_0.99",
+            "stake_30.9954",
+            "stake_100.11",
+            "stake_Eleven"
+        ],
+    )
+    def test_place_incorrect_bet(self, api_client, stake):
+        # Arrange
+        matches = api_client.get_matches()
+        assert matches, "No available matches"
+
+        api_client.reset_balance()
+        initial_balance = api_client.get_balance()["balance"]
+
+        bet_data = {
+            "matchId": matches[0]["id"],
+            "selection": "HOME",
+            "stake": stake,
+        }
+
+        # Act
+        result = api_client.place_bet(bet_data)
+
+        # Assert
+        APIAssertions.assert_failed_bet(result)
+
+        updated_balance = api_client.get_balance()["balance"]
+
+        APIAssertions.assert_balance_unchanged(
+            initial_balance,
+            updated_balance,
         )

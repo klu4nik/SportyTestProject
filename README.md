@@ -94,9 +94,23 @@ The following environment variables can be configured in `utils/config.py`:
 
 ## Framework Features
 
-- Page Object Model implementation
-- UI and API test support
-- Automatic failure screenshots
-- Configurable test environment
+- Page Object Model for UI tests
+- Separate API client layer
+- Reusable assertion helpers
+- Pytest fixtures for setup and cleanup
+- Parameterized test execution
+- Soft assertions with `pytest-check`
 - HTML reporting
-- Proper fixtures for test setup/teardown
+- Automatic screenshots on UI failures
+
+
+## Documentation
+
+Additional documentation is available in the `docs` directory:
+
+- `TEST_PLAN.md`
+- `TEST_CASES.md`
+- `EXECUTION_RESULTS.md`
+- `BUGS.md`
+
+---

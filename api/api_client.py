@@ -63,15 +63,16 @@ class APIClient:
             bet_data: Dictionary containing bet details
             
         Returns:
-            Dictionary containing bet result
+            Dictionary containing bet result or error details
         """
         response = self.session.post(
             urljoin(self.base_url, 'api/place-bet'),
             json=bet_data,
             timeout=self.timeout
         )
-        response.raise_for_status()
-        return response.json()
+        result = response.json()
+        result["_status_code"] = response.status_code
+        return result
     
     def reset_balance(self) -> None:
         """
