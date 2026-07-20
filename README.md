@@ -46,7 +46,7 @@ pytest --html=report.html --self-contained-html
 
 The following environment variables can be configured in `utils/config.py`:
 
-- `USER_ID` - User identifier for test execution
+- `USER_ID` - User identifier for test execution. Need to be setted up in env or modified in utils/config.py file
 
 ## Project Structure
 
