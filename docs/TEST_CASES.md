@@ -15,6 +15,11 @@
 
 Verify that a user can successfully place a single bet, that all values displayed during the betting flow are correct, and that the account balance is updated after the bet is placed.
 
+### Risk Rationale
+
+Placing a bet is the core business workflow. If this functionality fails, users cannot use the platform, making it the highest-risk scenario.
+
+
 ### Test Scenario
 
 ```gherkin
@@ -78,10 +83,6 @@ And the account balance displayed in the UI should decrease by the stake amount
 - Soft assertions (`pytest-check`) are used to validate all popup fields, payout calculation, and balance updates within a single execution, allowing all failures to be reported together.
 
 
-# Test Cases
-
----
-
 ## TC-002: Validate different negative values of bets
 
 | Property | Value |
@@ -95,6 +96,10 @@ And the account balance displayed in the UI should decrease by the stake amount
 
 Verify that a user can't place a bet using invalid stake values
 
+### Risk Rationale
+
+Invalid stake validation protects against incorrect user input and prevents invalid financial transactions.
+
 ### Test Scenario
 
 ```gherkin
@@ -102,7 +107,7 @@ Given the user has a positive account balance
 And the user opens the Sports Home page
 When the user selects a match outcome
 And enters an invalid stake
-Then the the error message near stake field must be shown or input block wrong values
+Then the error message near stake field must be shown or input block wrong values
 ```
 
 ### Test Data
@@ -139,6 +144,10 @@ Then the the error message near stake field must be shown or input block wrong v
 
 Verify that a user can't place a bet with incorrect values
 
+### Risk Rationale
+
+Allowing bets without a sufficient balance could result in incorrect account states and financial inconsistencies.
+
 ### Test Scenario
 
 ```gherkin
@@ -147,7 +156,7 @@ And the user opens the Sports Home page
 And the user selects a match outcome
 And enters a valid stake 100€
 And succesfully place bet
-And closed succsful popup
+And closed successful popup
 When the user selects a match outcome
 And enters a valid stake 30€
 Then the error message "Insufficient balance" near stake field must be shown
@@ -175,7 +184,11 @@ Then the error message "Insufficient balance" near stake field must be shown
 
 ### Description
 
-Validate matches list shows  correct values for the search and dates filters
+Validate matches list shows correct values for the search and dates filters
+
+### Risk Rationale
+
+Incorrect filtering may display unavailable or historical events, leading users to place bets on invalid matches.
 
 ### Test Scenario
 
@@ -204,7 +217,7 @@ Examples:
 
 | Property | Value     |
 |----------|-----------|
-| **Feature** | Beting    |
+| **Feature** | Betting   |
 | **Domain** | API       |
 | **Status** | Automated |
 | **Priority** | High      |
@@ -213,13 +226,16 @@ Examples:
 
 Validate matches list shows correct values for the search and dates filters
 
-### Test Scenario
+### Risk Rationale
 
+The API is the source of truth for bet placement. Incorrect responses affect all clients using the service.
+
+### Test Scenario
 
 ```gherkin
 Given the user has a positive account balance
-When the user sends Plce_bet api request with correct body and stake
-Then response comes with 200 responce code 
+When the user sends Place_bet api request with correct body and stake
+Then response comes with 200 response code 
 And response body contain correct information
 And balance is correct 
 And currency is "Eur"
@@ -240,7 +256,7 @@ And currency is "Eur"
 
 | Property | Value     |
 |----------|-----------|
-| **Feature** | Beting    |
+| **Feature** | Betting   |
 | **Domain** | API       |
 | **Status** | Automated |
 | **Priority** | Critical  |
