@@ -11,7 +11,7 @@ The framework implements the Page Object Model design pattern:
 
 ## Test Structure
 Tests are organized into:
-- UI tests: Cover user journey through web interface
+- UI tests: Cover user journey through web interface with some checks on api side
 - API tests: Validate backend functionality directly
 
 ## Configuration Management
